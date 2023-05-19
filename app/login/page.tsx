@@ -7,12 +7,15 @@ import playStore from "../../public/playStore.png";
 import microsoft from "../../public/microsoft.png";
 import { useContext, useState } from "react";
 import { AuthContext } from "@/context/AuthContext";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 const Login = () => {
+  const router = useRouter();
+  const handleRedirect = () => {
+    router.push("/");
+  };
   const [user, setUser] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
-  const router = useRouter();
 
   const { updateData, email, token } = useContext(AuthContext);
 
@@ -26,17 +29,17 @@ const Login = () => {
       body: JSON.stringify(user),
     });
     const data = await resp.json();
-    console.log(data.email);
+    console.log(data);
     if (!resp.ok) {
-      setError(data.messg);
+      setError(data.error);
     }
     if (resp.ok) {
-      localStorage.setItem("id", data.id);
-      localStorage.setItem("name", data.name);
+      // localStorage.setItem("id", data.id);
+      // localStorage.setItem("name", data.name);
       localStorage.setItem("email", data.email);
       localStorage.setItem("token", data.token);
       updateData({ email: data.email, token: data.token });
-      redirect("/");
+      handleRedirect();
     }
   };
 
