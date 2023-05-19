@@ -7,11 +7,12 @@ import playStore from "../../public/playStore.png";
 import microsoft from "../../public/microsoft.png";
 import { useContext, useState } from "react";
 import { AuthContext } from "@/context/AuthContext";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 const Login = () => {
   const [user, setUser] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
+  const router = useRouter();
 
   const { updateData, email, token } = useContext(AuthContext);
 
@@ -35,9 +36,7 @@ const Login = () => {
       localStorage.setItem("email", data.email);
       localStorage.setItem("token", data.token);
       updateData({ email: data.email, token: data.token });
-      setTimeout(() => {
-        redirect("/");
-      }, 1000);
+      router.push("/");
     }
   };
 
