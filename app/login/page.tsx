@@ -6,19 +6,17 @@ import Image from "next/image";
 import playStore from "../../public/playStore.png";
 import microsoft from "../../public/microsoft.png";
 import { useContext, useState } from "react";
-import { useRouter } from "next/navigation";
 import { AuthContext } from "@/context/AuthContext";
+import { redirect } from "next/navigation";
 
 const Login = () => {
   const [user, setUser] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
-  const router = useRouter();
+
   const { updateData, email, token } = useContext(AuthContext);
 
   const signin = async () => {
     setError("");
-    setSuccess("");
     const resp = await fetch("/api/auth/login", {
       method: "POST",
       headers: {
@@ -27,18 +25,19 @@ const Login = () => {
       body: JSON.stringify(user),
     });
     const data = await resp.json();
-    // console.log(data);
+    console.log(data.email);
     if (!resp.ok) {
       setError(data.messg);
     }
     if (resp.ok) {
-      localStorage.setItem("id", data.user.id);
-      localStorage.setItem("name", data.user.name);
-      localStorage.setItem("email", data.user.email);
+      localStorage.setItem("id", data.id);
+      localStorage.setItem("name", data.name);
+      localStorage.setItem("email", data.email);
       localStorage.setItem("token", data.token);
-      updateData({ email: data.user.email, token: data.token });
-      setSuccess(data.messg);
-      router.push("/");
+      updateData({ email: data.email, token: data.token });
+      setTimeout(() => {
+        redirect("/");
+      }, 1000);
     }
   };
 
@@ -79,34 +78,19 @@ const Login = () => {
           <Button onClick={signin} variant="contained">
             Log in
           </Button>
-          <div>
-            {error && (
-              <Typography
-                sx={{
-                  textAlign: "center",
-                  color: "red",
-                  fontSize: 20,
-                  fontWeight: "bold",
-                  mt: 4,
-                }}>
-                {error}
-              </Typography>
-            )}
-          </div>
-          <div>
-            {success && (
-              <Typography
-                sx={{
-                  textAlign: "center",
-                  color: "green",
-                  fontSize: 20,
-                  fontWeight: "bold",
-                  mt: 4,
-                }}>
-                {success}
-              </Typography>
-            )}
-          </div>
+
+          {error && (
+            <Typography
+              sx={{
+                textAlign: "center",
+                color: "red",
+                fontSize: 20,
+                fontWeight: "bold",
+                mt: 4,
+              }}>
+              {error}
+            </Typography>
+          )}
         </Box>
         <Box sx={{ display: "flex", alignItems: "center", mt: 3, gap: 4 }}>
           <Divider sx={{ width: "40%" }} />

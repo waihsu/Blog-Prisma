@@ -78,6 +78,7 @@ const Navbar = (props: Props) => {
   const logout = () => {
     localStorage.removeItem("email");
     localStorage.removeItem("token");
+    localStorage.removeItem("id");
     updateData({ token: null });
   };
 

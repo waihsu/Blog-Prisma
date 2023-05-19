@@ -26,10 +26,12 @@ export async function POST(req: NextRequest, res: NextResponse) {
   const hashedPassword: any = user.password;
   const isCorrectPassword = await bcrypt.compare(password, hashedPassword);
   const token = createToken(user.id);
+  const name = user.name;
+  const id = user.id;
 
   // delete user?.password;
   return isCorrectPassword
-    ? new NextResponse(JSON.stringify({ user, token }), {
+    ? new NextResponse(JSON.stringify({ email, name, id, token }), {
         status: 200,
       })
     : new NextResponse(JSON.stringify({ messg: "Wrong Password" }), {
