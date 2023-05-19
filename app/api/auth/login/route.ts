@@ -26,7 +26,8 @@ export async function POST(req: NextRequest, res: NextResponse) {
   const hashedPassword: any = user.password;
   const isCorrectPassword = await bcrypt.compare(password, hashedPassword);
   const token = createToken(user.id);
-  delete user.password;
+
+  // delete user?.password;
   return isCorrectPassword
     ? new NextResponse(JSON.stringify({ user, token }), {
         status: 200,
