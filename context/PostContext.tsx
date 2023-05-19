@@ -25,7 +25,7 @@ export const PostContext = createContext(defaultPost);
 
 export const PostContextProvider = ({ children }: Props) => {
   const [posts, setPost] = useState(defaultPost);
-  console.log("post:", posts);
+  //   console.log("post:", posts);
   const fetchPost = async () => {
     const resp = await fetch("/api/post");
     const data = await resp.json();
