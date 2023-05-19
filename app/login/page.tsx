@@ -7,7 +7,7 @@ import playStore from "../../public/playStore.png";
 import microsoft from "../../public/microsoft.png";
 import { useContext, useState } from "react";
 import { AuthContext } from "@/context/AuthContext";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 
 const Login = () => {
   const [user, setUser] = useState({ email: "", password: "" });
@@ -36,7 +36,7 @@ const Login = () => {
       localStorage.setItem("email", data.email);
       localStorage.setItem("token", data.token);
       updateData({ email: data.email, token: data.token });
-      router.push("/");
+      redirect("/");
     }
   };
 
